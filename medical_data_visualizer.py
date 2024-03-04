@@ -7,7 +7,8 @@ import numpy as np
 df = pd.read_csv('medical_examination.csv')
 
 # Add 'overweight' column
-df['overweight'] = None
+df['BMI'] = (df['weight']/((df['height']/100)**2)).round(1)
+df['overweight'] = (df['BMI'] > 25).astype(int) # This converts the boolean values to integers 1 for True and vice versa
 
 # Normalize data by making 0 always good and 1 always bad. If the value of 'cholesterol' or 'gluc' is 1, make the value 0. If the value is more than 1, make the value 1.
 
