@@ -20,19 +20,20 @@ df[['cholesterol', 'gluc']] = df[['cholesterol', 'gluc']].applymap(lambda x: 1 i
 # Draw Categorical Plot
 def draw_cat_plot():
     # Create DataFrame for cat plot using `pd.melt` using just the values from 'cholesterol', 'gluc', 'smoke', 'alco', 'active', and 'overweight'.
-    df_cat = None
+    df_cat = pd.melt(df,id_vars="cardio", value_vars = ["cholesterol", "gluc", "smoke", "alco", "active", "overweight"])
 
 
     # Group and reformat the data to split it by 'cardio'. Show the counts of each feature. You will have to rename one of the columns for the catplot to work correctly.
-    df_cat = None
+    df_cat = df_cat.groupby(["variable", "value", "cardio"])["value"].count()
+    df_cat = pd.DataFrame(df_cat).rename(columns={"value": "total"}).reset_index()
     
 
     # Draw the catplot with 'sns.catplot()'
-
+    sns.catplot(x = "variable", y = "total", hue = "value", kind = "bar",col = "cardio", data = df_categorical) 
 
 
     # Get the figure for the output
-    fig = None
+    fig = sns.catplot(x = "variable", y = "total", hue = "value", kind = "bar",col = "cardio", data = df_categorical) 
 
 
     # Do not modify the next two lines
