@@ -29,11 +29,11 @@ def draw_cat_plot():
     
 
     # Draw the catplot with 'sns.catplot()'
-    sns.catplot(x = "variable", y = "total", hue = "value", kind = "bar",col = "cardio", data = df_categorical) 
+    sns.catplot(x = "variable", y = "total", hue = "value", kind = "bar",col = "cardio", data = df_cat) 
 
 
     # Get the figure for the output
-    fig = sns.catplot(x = "variable", y = "total", hue = "value", kind = "bar",col = "cardio", data = df_categorical) 
+    fig = sns.catplot(x = "variable", y = "total", hue = "value", kind = "bar",col = "cardio", data = df_cat) 
 
 
     # Do not modify the next two lines
@@ -44,21 +44,31 @@ def draw_cat_plot():
 # Draw Heat Map
 def draw_heat_map():
     # Clean the data
-    df_heat = None
+    df_heat = df[(df['ap_lo'] <= df['ap_hi']) & 
+             (df['height'] >= df['height'].quantile(0.025)) & 
+             (df['height'] <= df['height'].quantile(0.975)) & 
+             (df['weight'] >= df['weight'].quantile(0.025)) & 
+             (df['height'] <= df['height'].quantile(0.975))]
 
     # Calculate the correlation matrix
-    corr = None
+    corr = df_heat.corr()
 
     # Generate a mask for the upper triangle
-    mask = None
-
-
-
-    # Set up the matplotlib figure
-    fig, ax = None
+    mask = np.triu(corr)
 
     # Draw the heatmap with 'sns.heatmap()'
+    
+    # Set up the matplotlib figure
+    plt.figure(figsize=(10, 12))
 
+    # Create a heatmap with the upper triangle masked
+    sns.heatmap(corr, mask=mask, annot=True,fmt=".1f", cbar_kws={'shrink':0.5}, linewidths=.5, square=True)
+
+    # Set the title of the plot
+    plt.title("Correlation Matrix with Upper Triangle Masked")
+
+    # Show the plot
+    plt.show()
 
 
     # Do not modify the next two lines
